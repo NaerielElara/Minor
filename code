@@ -1,0 +1,36 @@
+import pyautogui
+import keyboard
+import time
+import threading
+
+# Flag to control the auto key presser
+running = False
+
+def key_presser():
+    global running
+    while True:
+        if running:
+            pyautogui.press('1')  # Press the '1' key
+            time.sleep(0.05)  # Adjust the delay as needed
+        else:
+            time.sleep(0.1)
+
+def toggle_running():
+    global running
+    running = not running
+    print("Started" if running else "Stopped")
+
+# Start the key presser thread
+thread = threading.Thread(target=key_presser)
+thread.daemon = True
+thread.start()
+
+print("Press F1 to start/stop the auto key presser.")
+print("Press F2 to exit.")
+
+# Listen for key events
+keyboard.add_hotkey('F1', toggle_running)
+keyboard.wait('F2')
+
+running = False
+print("Exiting...")
